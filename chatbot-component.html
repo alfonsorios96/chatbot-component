@@ -1,0 +1,132 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="chatbot-component">
+    <template>
+        <style>
+            .container {
+
+            }
+
+            .chat {
+                width: 500px;
+                height: 400px;
+                border: 1px solid black;
+            }
+
+            .actions {
+                display: flex;
+            }
+
+            paper-input {
+                width: 80%;
+                max-width: 400px;
+            }
+
+            paper-button {
+                background: royalblue;
+                color: white;
+                height: 40px;
+                margin-top: 15px;
+                margin-left: 25px;
+            }
+        </style>
+        <div class="container">
+            <div class="chat">
+                <dom-repeat items="[[chat]]" as="message">
+                    <template>
+                        <p><strong>[[message.user]]:</strong> [[message.text]]</p>
+                    </template>
+                </dom-repeat>
+            </div>
+            <div class="actions">
+                <paper-input label="Introduce texto" id="input"></paper-input>
+                <paper-button on-tap="clientSays">Enviar</paper-button>
+            </div>
+        </div>
+    </template>
+    <script>
+      const rules = {
+        triggers: [
+          {
+            value: /hola/,
+            message: 'Hola bro !'
+          },
+          {
+            value: /hambre/,
+            command: 'menu'
+          }
+        ],
+        commands: [
+          {
+            name: 'menu',
+            action: () => {
+
+            }
+          }
+        ]
+      };
+    </script>
+    <script>
+      /**
+       * `chatbot-component`
+       *
+       *
+       * @customElement
+       * @polymer
+       * @demo demo/index.html
+       */
+      class ChatbotComponent extends Polymer.Element {
+        static get is() {
+          return 'chatbot-component';
+        }
+
+        static get properties() {
+          return {
+            chat: {
+              type: Array,
+              value: []
+            }
+          };
+        }
+
+        clientSays() {
+          this.write('guest', this.$.input.value);
+          this.analyze(this.$.input.value);
+          this.$.input.value = '';
+        }
+
+        botSays(message) {
+          this.write('bot', message);
+        }
+
+        write(user, text) {
+          this.set('chat', [...this.chat, {
+            user, text
+          }]);
+        }
+
+        analyze(string) {
+          string = string.trim().toLowerCase().replace(/\s/gm, '');
+          const triggers = [{
+            value: /hola/,
+            action: () => {
+              this.botSays('Qué tal amigo');
+            }
+          }];
+          const match = triggers.filter(item => {
+            const regex = new RegExp(item.value);
+            return regex.test(string);
+          });
+          if (match.length > 0) {
+            for (const command of match) {
+              command.action();
+            }
+          }
+        }
+      }
+
+      window.customElements.define(ChatbotComponent.is, ChatbotComponent);
+    </script>
+</dom-module>
