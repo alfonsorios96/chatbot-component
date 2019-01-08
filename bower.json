@@ -4,7 +4,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
     "paper-input": "Polymerelements/paper-input#^2.0.0",
-    "paper-button": "Polymerelements/paper-button#^2.0.0"
+    "paper-button": "Polymerelements/paper-button#^2.0.0",
+    "user-message": "jorgeme0996/message-component"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",

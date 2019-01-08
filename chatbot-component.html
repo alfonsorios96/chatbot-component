@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../user-message/user-message.html">
 
 <dom-module id="chatbot-component">
     <template>
@@ -32,11 +33,12 @@
                 margin-left: 25px;
             }
         </style>
+        <h2>[[title]]</h2>
         <div class="container">
             <div class="chat">
                 <dom-repeat items="[[chat]]" as="message">
                     <template>
-                        <p><strong>[[message.user]]:</strong> [[message.text]]</p>
+                        <user-message text="[[message.text]]" from="[[message.user]]"></user-message>
                     </template>
                 </dom-repeat>
             </div>
@@ -87,12 +89,16 @@
             chat: {
               type: Array,
               value: []
+            },
+            title: {
+              type: String,
+              value: ''
             }
           };
         }
 
         clientSays() {
-          this.write('guest', this.$.input.value);
+          this.write('user', this.$.input.value);
           this.analyze(this.$.input.value);
           this.$.input.value = '';
         }

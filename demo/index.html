@@ -10,6 +10,7 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../polymer/lib/elements/dom-bind.html">
     <link rel="import" href="../chatbot-component.html">
 
     <custom-style>
@@ -22,7 +23,15 @@
       <h3>Basic chatbot-component demo</h3>
       <demo-snippet>
         <template>
-          <chatbot-component></chatbot-component>
+          <dom-bind>
+            <template>
+              <chatbot-component title="[[message]]"></chatbot-component>
+            </template>
+          </dom-bind>
+          <script>
+            const demo = document.querySelector('dom-bind');
+            demo.message = 'Holi cara de boli';
+          </script>
         </template>
       </demo-snippet>
     </div>
